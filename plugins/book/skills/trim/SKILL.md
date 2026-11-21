@@ -1,11 +1,9 @@
 ---
 name: trim
 description: >
-  Use when docs feel bloated, repetitive or hard to navigate, when check-book.py warns a document is
-  over size, or on a periodic health pass — to trim, dedupe and restructure without losing anything
-  load-bearing. Reports before changing; applies only what the person approves. Not for deciding which
-  of two disagreeing sources is right (book:check-consistency, book:check-docs), nor for checking docs
-  against the FSD or the code (book:check-docs). Formerly /docs-trim.
+  Use when docs feel bloated, repetitive or hard to navigate, or check-book.py warns a document is
+  over size: trims, dedupes and restructures, losing nothing load-bearing. Reports before changing; applies only what the person approves. Not for deciding which
+  of two disagreeing sources is right (book:check-consistency, book:check-docs). Formerly /docs-trim.
 ---
 
 You are gardening this repository's documentation: **minimum sufficient content
@@ -239,3 +237,4 @@ that's why `REVIEW` exists, and why it's never a shortcut to skip.
   run those next.
 - Edits made: commit them on the `chore/docs-<slug>` branch; its pull request opens only
   when the person asks ([CLAUDE.md, *Git*](CLAUDE.md#git)).
+- **In a flow** (`/book:flow`): `docs-health` → `/check-guides`.

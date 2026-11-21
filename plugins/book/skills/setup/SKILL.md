@@ -129,3 +129,4 @@ when the person asks.
   Drive folder), then verify again.
 - **NOT READY** — work the list from the top, one pull request per stage, and verify after each;
   the verdict should rise each time.
+- **In a flow** (`/book:flow`): `new-project` → `/book:check-sources`.

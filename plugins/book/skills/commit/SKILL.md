@@ -147,3 +147,4 @@ Left uncommitted: <paths> | none
   description, and pushes and opens the pull request only when the person asks (CLAUDE.md, Git).
 - **Stopped on a blocker:** fix it, then run `/book:commit` again; nothing was committed.
 - **Not recorded:** the tool said why — commit what is left, or review again, then record.
+- **In a flow** (`/book:flow`): `build-task` → `/book:ship`; `fix-defect` → `/book:ship`; `upgrade-book` → `/book:ship`.

@@ -1,10 +1,9 @@
 ---
 name: self-review
 description: >
-  Use before committing or opening a pull request — "review my branch", "is this ready for a PR", or
-  when /book:commit runs it — to review everything that differs from origin/dev, committed or not,
-  against the team's review checklist. Read-only on the repository: prints a READY or NOT READY verdict
-  and records it inside .git, where `factory pr open` requires READY for the commit it opens. For an
+  Use before committing or opening a pull request, to review everything that differs from origin/dev
+  against the team's review checklist. Read-only: prints a READY or NOT READY verdict
+  and records it, which `factory pr open` requires. For an
   open PR use book:peer-review; for FSD traceability, book:fact-check. Formerly /review-branch.
 allowed-tools: Read, Grep, Glob, Bash(python3 devtools/factory/factory.py reviewed *), Bash(python devtools/factory/factory.py reviewed *), Bash(python3 devtools/factory/factory.py fingerprint), Bash(python devtools/factory/factory.py fingerprint), Bash(python3 devtools/factory/factory.py review-scope*), Bash(python devtools/factory/factory.py review-scope*), Bash(git diff*), Bash(git log*), Bash(git status*), Bash(git merge-base*), Bash(git rev-parse*), Bash(git ls-files*), Bash(git show*), Bash(git fetch*), Bash(pdftotext *), Bash(ls *), Bash(python3 devtools/checks/check-book.py*), Bash(python devtools/checks/check-book.py*)
 ---
@@ -158,3 +157,4 @@ work. Recording is the one write this skill makes, and it is never in the reposi
 - **A change to the Book** (`CLAUDE.md` files, `docs/`, skills, checks): the `book:reviewer` agent is a
   read-only second pair of eyes, and `book:tester` runs and reads the self-tests the change reaches. Neither
   records a verdict; this skill's stands.
+- **In a flow** (`/book:flow`): `build-task` → `/book:commit`; `fix-defect` → `/book:commit`; `upgrade-book` → `/book:commit`.

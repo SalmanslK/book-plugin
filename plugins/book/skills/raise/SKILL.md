@@ -81,3 +81,4 @@ on its own goes on a `chore/docs-<slug>` branch cut from the base with `--no-tra
 - A defect to fix now: a `fix/<id>-<slug>` branch; its commit names the id.
 - A question that blocks a plan: the plan lists it; `/book:check-sources` before chasing the answer.
 - An answer arrived: `/book:sync-sources` moves it to *Resolved* and carries it through the Book.
+- **In a flow** (`/book:flow`): `answers-arrived` → `/book:impact`; `qa-artifacts-changed` → `/book:progress`; `new-feature` → done; `fix-defect` → `/book:self-review`; `spec-says-x` → `/book:write-for`; `dev-deploy` → done.

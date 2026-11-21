@@ -354,3 +354,4 @@ positives — not the maximum number of comments.**
 - **Not posted:** the findings stay in the terminal; the person decides what to send.
 - **A confirmed defect in merged code:** it gets a `docs/defects.md` row the day it is found
   (CLAUDE.md, Features).
+- **In a flow** (`/book:flow`): `review-teammate-pr` → done.

@@ -146,3 +146,4 @@ Lead with where the project is: the release it moved from and to, and READY or n
 - A new check reports findings in the project's own code: `/book:self-review`, or a `defects.md` row
   for a real defect.
 - Something found belongs in the template: note it for the template's next release.
+- **In a flow** (`/book:flow`): `upgrade-book` → `/book:self-review`.

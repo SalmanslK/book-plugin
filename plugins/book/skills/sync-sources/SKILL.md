@@ -237,3 +237,4 @@ Commit.
 - The pull request, when the person asks; then `/publish-guides` and `/book:progress`
   where the wrap-up offered them.
 - Each mismatch Phase 5 logged: its own `fix/D<n>-…` branch later, never in this pass.
+- **In a flow** (`/book:flow`): `new-fsd-revision` → `/book:fact-check`; `answers-arrived` → `/book:raise`.

@@ -18,6 +18,7 @@ and its own helper scripts through `${CLAUDE_SKILL_DIR}`.
 
 | Skill | What it does | Formerly |
 |---|---|---|
+| `/book:flow` | Lists the 18 ready-made recipes (which skills, in what order, where a person decides), or walks one | — (new in 0.3.0) |
 | `/book:setup` | Sets up the Book in a repository, or checks it is ready | `/book-setup` |
 | `/book:upgrade` | Moves a Book to a newer template release | `/book-upgrade` |
 | `/book:check-sources` | Checks the client's documents are current | `/requirements-check` |

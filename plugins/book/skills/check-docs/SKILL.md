@@ -224,3 +224,4 @@ entire value of the exercise.
 - Approved doc fixes outside a work branch: commit them on the `chore/docs-<slug>` branch;
   its pull request opens only when the person asks ([CLAUDE.md, *Git*](CLAUDE.md#git)).
 - An FE guide changed: `/publish-guides`. Requirement text in doubt: `/book:check-sources`.
+- **In a flow** (`/book:flow`): `docs-health` → `/book:update-docs`; `qa-build` → `/check-guides`.

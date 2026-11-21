@@ -163,3 +163,4 @@ PR: opened #<n> <link> | not opened — draft only | refused — <the tool's rea
   Answer the comments with this skill.
 - **Stopped:** fix what it named — `/book:self-review` or `/book:commit` for the verdict, the
   failing test for the local CI — then run `/book:ship` again.
+- **In a flow** (`/book:flow`): `build-task` → the `after-merge` flow; `fix-defect` → the `after-merge` flow; `upgrade-book` → done.

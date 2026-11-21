@@ -78,3 +78,4 @@ Say **"none"** rather than leaving a line out — an absent line reads as not ch
 - Before a PR: `/book:self-review`, then `sh devtools/checks/ci-local.sh` at the tier above.
 - An FSD section with no rows: the plan that would own it, or a new plan from the template.
 - Requirement ids in doubt: `/book:fact-check` on the module.
+- **In a flow** (`/book:flow`): `new-fsd-revision` → `/book:sync-sources`; `answers-arrived` → `/check-guides`; `new-feature` → `/book:raise`.

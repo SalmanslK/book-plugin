@@ -287,3 +287,4 @@ When the question is "is everything current" — and as the weekly sweep:
 - Captures or records made: commit them on the general-refresh branch; its pull request opens
   only when the person asks.
 - The whole knowledge base must follow a new revision: `/book:sync-sources`.
+- **In a flow** (`/book:flow`): `weekly-sweep` → `/book:progress`; `new-fsd-revision` → `/book:impact`; `answers-arrived` → `/book:sync-sources`; `qa-artifacts-changed` → `/book:raise`; `new-feature` → `/book:plan`; `spec-says-x` → `/book:fact-check`; `after-merge` → done; `qa-build` → `/book:progress`; `new-project` → the `new-feature` flow.

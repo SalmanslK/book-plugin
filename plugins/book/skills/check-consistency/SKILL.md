@@ -1,10 +1,8 @@
 ---
 name: check-consistency
 description: >
-  Use when documents may disagree with each other — "which doc is right", "where does this belong", a
-  concept was renamed, docs were added or heavily edited, or a branch that changed docs/ is about to
-  open its PR. Finds duplication, contradictions, terminology drift and missing links between docs, and
-  reports before changing anything. Documentation against documentation only. Not for docs against code
+  Use when documents may disagree with each other: a rename, heavy doc edits, or a docs branch before its PR. Finds duplication, contradictions, terminology drift and missing links between docs, and
+  reports before changing anything. Not for docs against code
   (book:check-docs) or bloat (book:trim). Formerly /docs-consistency.
 allowed-tools: Read, Grep, Glob, Bash(git diff*), Bash(git log*), Bash(git ls-files*), Bash(git grep*), Bash(python3 devtools/checks/check-book.py*), Bash(python devtools/checks/check-book.py*)
 ---
@@ -235,3 +233,4 @@ than a directory that quietly agrees with itself.
   remove copies only once this pass has named each fact's owner.
 - Edits on a `chore/docs-<slug>` branch: its pull request opens only when the person asks
   ([CLAUDE.md, *Git*](CLAUDE.md#git)).
+- **In a flow** (`/book:flow`): `docs-health` → `/book:check-docs`.

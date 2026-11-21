@@ -71,3 +71,4 @@ is discussed first, and the plan changes in the same commit as the code.
 - Screens to build: **`/book:outline-api`** for §6.
 - Questions raised: chase them; **`/book:sync-sources`** when answers land.
 - Approved: build task by task; **`/book:impact`** before the first pull request.
+- **In a flow** (`/book:flow`): `new-feature` → `/book:outline-api`.

@@ -1,9 +1,7 @@
 ---
 name: update-docs
 description: >
-  Use when, and only when, the code is already known to be right and the docs have lagged — after a
-  merge, rename or refactor you performed yourself — to bring the documentation, a built module's FE
-  integration guide included, in line with what the code does. Code wins on behaviour, never on intent.
+  Use when, and only when, the code is already known to be right and the docs have lagged: brings the documentation, FE guides included, in line with what the code does. Code wins on behaviour, never on intent.
   Applies changes and reports them. Not for when it is not certain which side is wrong
   (book:check-docs), nor docs against each other (book:check-consistency). Formerly
   /docs-update-from-code.
@@ -204,3 +202,4 @@ cannot tell you the answer, say that it cannot.
 - An FE guide changed: `/publish-guides`, so the front end's Drive copy matches.
 - Edits on a `chore/docs-<slug>` branch: its pull request opens only when the person asks
   ([CLAUDE.md, *Git*](CLAUDE.md#git)).
+- **In a flow** (`/book:flow`): `finish-feature` → `/publish-guides`; `docs-health` → `/book:trim`.

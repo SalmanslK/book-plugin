@@ -106,3 +106,4 @@ For each endpoint, write:
 
 - The contract agreed: `/book:impact` on the plan's FSD section, then build the plan's Tasks.
 - Questions raised: they wait in `open-questions.md`; `/book:check-sources` before chasing one.
+- **In a flow** (`/book:flow`): `new-feature` → `/book:impact`.
