@@ -51,9 +51,9 @@ class CheckSkillsTests(unittest.TestCase):
         long = GOOD.format(name="a", extra="x" * 1100)
         failures, _ = check_skills.problems(self.plugin({"a": long}))
         self.assertTrue(any("the limit is 1,024" in line for line in failures), failures)
-        many = {f"s{n}": GOOD.format(name=f"s{n}", extra="y" * 900) for n in range(9)}
+        many = {f"s{n}": GOOD.format(name=f"s{n}", extra="y" * 900) for n in range(11)}
         failures, _ = check_skills.problems(self.plugin(many))
-        self.assertTrue(any("keep them under 7,500" in line for line in failures), failures)
+        self.assertTrue(any("keep them under 9,000" in line for line in failures), failures)
 
     def test_an_agent_without_tools_fails(self):
         text = "---\nname: tester\ndescription: Runs the tests.\n---\n"

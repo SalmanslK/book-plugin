@@ -43,9 +43,21 @@ and its own helper scripts through `${CLAUDE_SKILL_DIR}`.
 The agents are `book:reviewer` (formerly `book-reviewer`) and `book:tester` (formerly `book-tester`).
 Each skill's description ends with its old name for one version, so a search for it still finds the skill.
 
-The pack skills stay in the project and are called without a prefix: `/deploy` (formerly
-`/deploy-dev-qa`), `/publish-guides` (`/fe-guides-publish`), `/check-guides` (`/fe-guides-check`) and
-`/release-notes`.
+From 0.5.0 the packs' skills are here too, and apply only where the project's `[book] packs` (in
+`devtools/factory/factory.toml`) installed the pack; elsewhere they say so and stop. Their project facts
+stay in `factory.toml`: `[fe_guides]` (the Drive folder, the internal error codes, the owners) and
+`[deploy]` (the host, the environments, the runbook).
+
+| Skill | Pack | Was, in the project |
+|---|---|---|
+| `/book:check-guides` | fe-guides | `/check-guides` (`/fe-guides-check` before 1.3) |
+| `/book:publish-guides` | fe-guides | `/publish-guides` (`/fe-guides-publish` before 1.3) |
+| `/book:release-notes` | fe-guides | `/release-notes` |
+| `/book:deploy` | deploy | `/deploy` (`/deploy-dev-qa` before 1.3) |
+
+Book template v1.4.0 needs this plugin at 0.5.0 or later (its `plugin_min`). The plugin also works on a Book
+before v1.4.0: where `devtools/book.py` is absent, a skill runs the command by its old name,
+`python devtools/factory/factory.py`.
 
 ## Use it
 
@@ -60,7 +72,7 @@ A project names it in its shared `.claude/settings.json` (`extraKnownMarketplace
 ## Change it
 
 Edit the skills here, bump `version` in `plugins/book/.claude-plugin/plugin.json`, and run these before
-committing:
+committing. Push tag v0.5.0 before boilerplate v1.4.0 is released: that template's settings pin it.
 
 ```
 python tests/run.py
@@ -70,10 +82,11 @@ claude plugin validate .
 
 `tests/run.py` runs the self-tests of the skills' helper scripts and then `tests/check_skills.py`, which
 checks every skill and agent loads: frontmatter, names, a `## What next` section, each description at
-most 1,024 characters and all of them together under 7,500. It needs Python 3.11 or later and git, and
+most 1,024 characters and all of them together under 9,000. It needs Python 3.11 or later and git, and
 nothing else. A helper script finds the project from the folder it is run in (its git top level) and
-reads the ledgers with that project's own `devtools/checks/ledger_ids.py`; the tests use a copy of it
-from the boilerplate in `tests/fixtures/`.
+reads the ledgers with that project's own `devtools/checks/ledger_ids.py` (and `/book:check-guides`, the
+owner rule with its `devtools/checks/check-fe-guides.py`); the tests use copies of them from the
+boilerplate in `tests/fixtures/`.
 
 ## Licence
 

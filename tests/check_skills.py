@@ -29,7 +29,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1] / "plugins" / "book"
 DESCRIPTION_LIMIT = 1024
-LISTING_BUDGET = 7_500
+# 7,500 until v0.5.0, which took in the four pack skills (check-guides, publish-guides, release-notes, deploy)
+# from the project's own listing: the session's total is the same, so the budget grew by their 1,400 characters.
+LISTING_BUDGET = 9_000
 KEYS = {"name", "description", "when_to_use", "allowed-tools", "argument-hint", "disable-model-invocation",
         "user-invocable", "model", "license", "version", "metadata"}
 AGENT_KEYS = {"name", "description", "tools", "model", "color"}
