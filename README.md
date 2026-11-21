@@ -33,6 +33,7 @@ and its own helper scripts through `${CLAUDE_SKILL_DIR}`.
 | `/book:ship` | Runs the local CI and opens the pull request when asked | — |
 | `/book:fact-check` | Checks the code and the plans against the FSD | `/fsd-audit` |
 | `/book:check-docs` | Checks the docs against the code, both ways | `/docs-vs-code` |
+| `/book:check-permissions` | Checks who may do what: the FSD's role rules against authorization §2 and the code; reports gaps, writes nothing | — (new in 0.4.0) |
 | `/book:update-docs` | Brings the docs in line with code known to be right | `/docs-update-from-code` |
 | `/book:check-consistency` | Finds docs that disagree or repeat each other | `/docs-consistency` |
 | `/book:trim` | Trims and restructures the docs without losing anything | `/docs-trim` |
