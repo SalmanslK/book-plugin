@@ -1,0 +1,79 @@
+# Book plugin
+
+The Book's AI skills and agents, packaged as one Claude Code plugin named `book`. Its skills are called
+with the plugin's name in front: `/book:self-review`, `/book:commit`, `/book:check-sources`.
+
+## What is here, and what is not
+
+- **Here:** the skills (`plugins/book/skills/`) and the reviewer and tester agents (`plugins/book/agents/`).
+- **Not here, by design:** a project's docs, its `devtools/factory/factory.toml`, its checks and scripts,
+  its git hooks and its guard. CI and the hooks must find those inside the repository, and the guard
+  must protect everyone who opens it, whether or not they installed this plugin. They come from the
+  Book boilerplate.
+
+A skill reads a project's files by their path from the project's root (`CLAUDE.md`, `docs/project.md`),
+and its own helper scripts through `${CLAUDE_SKILL_DIR}`.
+
+## The skills
+
+| Skill | What it does | Formerly |
+|---|---|---|
+| `/book:setup` | Sets up the Book in a repository, or checks it is ready | `/book-setup` |
+| `/book:upgrade` | Moves a Book to a newer template release | `/book-upgrade` |
+| `/book:check-sources` | Checks the client's documents are current | `/requirements-check` |
+| `/book:sync-sources` | Carries a new requirements revision through the whole Book | `/requirements-sync` |
+| `/book:plan` | Starts a feature's plan from the template | `/plan-feature` |
+| `/book:outline-api` | Drafts the API a screen needs, before it is built | `/api-contract-draft` |
+| `/book:impact` | Lists what a change reaches, and the tests to run | `/change-impact` |
+| `/book:raise` | Writes one defect or question, with the next free id | — |
+| `/book:self-review` | Reviews a branch before its commit or pull request | `/review-branch` |
+| `/book:peer-review` | Reviews an open pull request and posts the findings | `/review-pr` |
+| `/book:commit` | Reviews, then commits in logical groups | — |
+| `/book:ship` | Runs the local CI and opens the pull request when asked | — |
+| `/book:fact-check` | Checks the code and the plans against the FSD | `/fsd-audit` |
+| `/book:check-docs` | Checks the docs against the code, both ways | `/docs-vs-code` |
+| `/book:update-docs` | Brings the docs in line with code known to be right | `/docs-update-from-code` |
+| `/book:check-consistency` | Finds docs that disagree or repeat each other | `/docs-consistency` |
+| `/book:trim` | Trims and restructures the docs without losing anything | `/docs-trim` |
+| `/book:progress` | Brings the task lists up to date with what merged | `/project-progress` |
+| `/book:write-for` | A short message for a named non-engineer | — |
+
+The agents are `book:reviewer` (formerly `book-reviewer`) and `book:tester` (formerly `book-tester`).
+Each skill's description ends with its old name for one version, so a search for it still finds the skill.
+
+The pack skills stay in the project and are called without a prefix: `/deploy` (formerly
+`/deploy-dev-qa`), `/publish-guides` (`/fe-guides-publish`), `/check-guides` (`/fe-guides-check`) and
+`/release-notes`.
+
+## Use it
+
+```
+claude plugin marketplace add SalmanslK/book-plugin
+claude plugin install book@book-plugins
+```
+
+A project names it in its shared `.claude/settings.json` (`extraKnownMarketplaces` and
+`enabledPlugins`), so everyone who opens the project is offered it.
+
+## Change it
+
+Edit the skills here, bump `version` in `plugins/book/.claude-plugin/plugin.json`, and run these before
+committing:
+
+```
+python tests/run.py
+claude plugin validate plugins/book
+claude plugin validate .
+```
+
+`tests/run.py` runs the self-tests of the skills' helper scripts and then `tests/check_skills.py`, which
+checks every skill and agent loads: frontmatter, names, a `## What next` section, each description at
+most 1,024 characters and all of them together under 7,500. It needs Python 3.11 or later and git, and
+nothing else. A helper script finds the project from the folder it is run in (its git top level) and
+reads the ledgers with that project's own `devtools/checks/ledger_ids.py`; the tests use a copy of it
+from the boilerplate in `tests/fixtures/`.
+
+## Licence
+
+Private, all rights reserved: see [LICENSE](LICENSE). No one outside the team that maintains it may
+use, copy or share it without the maintainers' written permission.

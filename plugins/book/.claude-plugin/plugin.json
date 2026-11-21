@@ -1,0 +1,15 @@
+{
+  "name": "book",
+  "version": "0.2.0",
+  "description": "The Book's AI skills and agents: plan a feature, outline its API, raise a defect or a question, review a branch or a pull request, commit, ship, check the client's sources and carry them through the docs, fact-check the code against the FSD, keep the docs consistent and trim, track progress, write for a non-engineer, and set up or upgrade a Book. A project made from the Book boilerplate keeps its docs, settings, checks and guard in its own repository; this plugin carries the skills that work on them.",
+  "keywords": [
+    "book",
+    "documentation",
+    "review",
+    "requirements",
+    "workflow"
+  ],
+  "author": {
+    "name": "Book maintainers"
+  }
+}

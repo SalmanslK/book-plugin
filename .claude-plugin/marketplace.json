@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "book-plugins",
+  "description": "The Book plugin, for projects built from the Book boilerplate.",
+  "owner": { "name": "Book maintainers" },
+  "plugins": [
+    {
+      "name": "book",
+      "description": "The Book's AI skills and agents (plan, raise, review, commit, ship, sources, fact-check, docs, progress, write-for, setup, upgrade).",
+      "source": "./plugins/book",
+      "category": "development"
+    }
+  ]
+}
