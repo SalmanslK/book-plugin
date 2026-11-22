@@ -77,5 +77,6 @@ from the boilerplate in `tests/fixtures/`.
 
 ## Licence
 
-Private, all rights reserved: see [LICENSE](LICENSE). No one outside the team that maintains it may
-use, copy or share it without the maintainers' written permission.
+Licensed for use only: see [LICENSE](LICENSE). You may install and use it in the projects you
+work on; you may not redistribute it, or present it as your own, without the author's written
+permission. Copyright (c) 2026 Salman Khan.
