@@ -55,7 +55,7 @@ stay in `factory.toml`: `[fe_guides]` (the Drive folder, the internal error code
 | `/book:release-notes` | fe-guides | `/release-notes` |
 | `/book:deploy` | deploy | `/deploy` (`/deploy-dev-qa` before 1.3) |
 
-Book template v1.4.0 needs this plugin at 0.5.0 or later (its `plugin_min`). The plugin also works on a Book
+Book template v1.4.1 needs this plugin at 0.5.1 or later (its `plugin_min`). The plugin also works on a Book
 before v1.4.0: where `devtools/book.py` is absent, a skill runs the command by its old name,
 `python devtools/factory/factory.py`.
 
@@ -72,7 +72,7 @@ A project names it in its shared `.claude/settings.json` (`extraKnownMarketplace
 ## Change it
 
 Edit the skills here, bump `version` in `plugins/book/.claude-plugin/plugin.json`, and run these before
-committing. Push tag v0.5.0 before boilerplate v1.4.0 is released: that template's settings pin it.
+committing. Push this plugin's release tag (v0.5.1) before the boilerplate release whose settings pin it (v1.4.1).
 
 ```
 python tests/run.py
