@@ -26,7 +26,7 @@ class ReviewAndShipTests(unittest.TestCase):
         self.assertTrue(all("--confirm-author-settled" in line for line in resolves), resolves)
 
     def test_the_core_review_checklist_is_where_review_scope_names_it(self):
-        # A project's `factory review-scope` prints `book:peer-review/references/<file>` for these.
+        # A project's `book review-scope` prints `book:peer-review/references/<file>` for these.
         for name in REVIEW_CHECKLIST:
             self.assertTrue((SKILLS / "peer-review" / "references" / name).is_file(), name)
         method = (SKILLS / "peer-review" / "references" / "review-method.md").read_text(encoding="utf-8")
@@ -73,6 +73,17 @@ class ReviewChecklistTests(unittest.TestCase):
     def test_the_method_owns_the_one_ready_rule(self):
         others = [name for name, text in self.files().items() if name != "review-method.md" and "NOT READY" in text]
         self.assertEqual(others, [], "the READY rule is stated once, in the method")
+
+
+class CommandNameTests(unittest.TestCase):
+    def test_no_skill_or_agent_runs_the_command_by_its_old_name(self):
+        # From 0.6.0 every Book that pins the plugin is on template 1.5.0, where factory.py is no command:
+        # no file runs it, under any path, with a command after it.
+        plugin = SKILLS.parent
+        named = [path.relative_to(plugin).as_posix() for path in sorted(plugin.rglob("*"))
+                 if path.is_file() and re.search(r"factory\.py\s+[\w-]",
+                                                 path.read_text(encoding="utf-8", errors="replace"))]
+        self.assertEqual(named, [])
 
 
 if __name__ == "__main__":

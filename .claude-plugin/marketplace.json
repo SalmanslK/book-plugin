@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "book-plugins",
   "description": "The Book plugin, for projects built from the Book boilerplate.",
-  "owner": { "name": "Book maintainers" },
+  "owner": { "name": "Salman Khan" },
   "plugins": [
     {
       "name": "book",

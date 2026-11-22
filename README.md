@@ -41,7 +41,7 @@ and its own helper scripts through `${CLAUDE_SKILL_DIR}`.
 | `/book:write-for` | A short message for a named non-engineer | — |
 
 The agents are `book:reviewer` (formerly `book-reviewer`) and `book:tester` (formerly `book-tester`).
-Each skill's description ends with its old name for one version, so a search for it still finds the skill.
+From Book template v1.5.0 the old names do nothing: a project keeps no stub under them.
 
 From 0.5.0 the packs' skills are here too, and apply only where the project's `[book] packs` (in
 `devtools/factory/factory.toml`) installed the pack; elsewhere they say so and stop. Their project facts
@@ -55,9 +55,8 @@ stay in `factory.toml`: `[fe_guides]` (the Drive folder, the internal error code
 | `/book:release-notes` | fe-guides | `/release-notes` |
 | `/book:deploy` | deploy | `/deploy` (`/deploy-dev-qa` before 1.3) |
 
-Book template v1.4.1 needs this plugin at 0.5.1 or later (its `plugin_min`). The plugin also works on a Book
-before v1.4.0: where `devtools/book.py` is absent, a skill runs the command by its old name,
-`python devtools/factory/factory.py`.
+Book template v1.5.0 needs this plugin at 0.6.0 or later (its `plugin_min`). From 0.6.0 a skill runs only
+`python devtools/book.py`, the Book's command since template v1.4.0; a Book that pins 0.6.0 is on 1.5.0.
 
 ## Use it
 
@@ -72,7 +71,7 @@ A project names it in its shared `.claude/settings.json` (`extraKnownMarketplace
 ## Change it
 
 Edit the skills here, bump `version` in `plugins/book/.claude-plugin/plugin.json`, and run these before
-committing. Push this plugin's release tag (v0.5.1) before the boilerplate release whose settings pin it (v1.4.1).
+committing. Push this plugin's release tag (v0.6.0) before the boilerplate release whose settings pin it (v1.5.0).
 
 ```
 python tests/run.py
