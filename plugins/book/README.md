@@ -21,6 +21,16 @@ claude plugin install book@book-plugins
 A Book names the plugin in its shared `.claude/settings.json`, pinned to a release tag, so everyone who
 opens the project is offered the same version.
 
+## Headless runs
+
+A headless session (`claude -p`) in the default permission mode refuses a shell command that chains or
+pipes (`&&`, `;`, `|`, `$(…)`, a `for` loop) unless the permission rules allow every command in it,
+because nobody is there to approve it. The skills prefer the Grep and Glob tools and one command per
+call. Where a recipe still pipes (the `pdftotext` recipes in `fact-check/references/reading-the-fsd.md`,
+the PDF fingerprint in `check-sources/references/diffing-and-capturing.md`), run that step
+interactively, or start the run with each command allowed, for example
+`claude -p --allowedTools "Bash(pdftotext *)" "Bash(awk *)" "Bash(wc *)" "Bash(git *)" …`.
+
 ## Licence
 
 All rights reserved, with use permitted as the [LICENSE](LICENSE) file in this folder sets out.

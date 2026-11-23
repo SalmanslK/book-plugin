@@ -256,6 +256,27 @@ class NextIdTests(RepoTestCase):
         self.assertIn("next D: D6  (highest D5, on fix/other)", out)
         self.assertIn("next Q: Q8  (highest Q7, on working tree)", out)
 
+    def test_an_id_mentioned_loosely_does_not_count_and_ties_go_to_the_first_source(self):
+        # A text whose loose bound (D9 in prose) is high but whose ledger rows are not must not win.
+        self.repo.git("checkout", "-q", "-b", "chore/notes")
+        self.repo.write("docs/defects.md", "## Open\n\nSee D9 in the notes.\n\n| Id | Sev |\n|---|---|\n| D3 | 🔵 |\n")
+        self.repo.commit()
+        self.repo.git("checkout", "-q", "main")
+        code, out = run_main(self.next_id.main, [str(self.repo.root)])
+        self.assertEqual(0, code, out)
+        self.assertIn("next D: D4  (highest D3, on main)", out)
+
+    def test_the_ledgers_of_every_branch_are_read_in_one_batch(self):
+        self.repo.git("checkout", "-q", "-b", "fix/other")
+        self.repo.write("docs/archive/defects-closed.md", "| **D5** | 🔵 | Fixed |\n")
+        self.repo.commit()
+        self.repo.git("checkout", "-q", "main")
+        blobs = self.next_id.read_blobs(self.repo.root, ["main:docs/defects.md", "fix/other:docs/archive/defects-closed.md",
+                                                         "main:docs/archive/defects-closed.md", "nope:docs/defects.md"])
+        self.assertEqual({"main:docs/defects.md", "fix/other:docs/archive/defects-closed.md"}, set(blobs))
+        self.assertIn("| D3 |", blobs["main:docs/defects.md"])
+        self.assertEqual("| **D5** | 🔵 | Fixed |\n", blobs["fix/other:docs/archive/defects-closed.md"])
+
     def test_a_base_that_is_not_here_stops_with_could_not_check(self):
         self.repo.write("devtools/factory/factory.toml", 'base_ref = "origin/dev"\n', add=False)
         code, out = run_main(self.next_id.main, [str(self.repo.root)])
@@ -266,10 +287,32 @@ class NextIdTests(RepoTestCase):
         self.assertEqual(2, code)
         self.assertIn("sets no base_ref", out)
 
+    def test_a_book_with_a_settings_loader_reads_the_base_through_it(self):
+        # From Book 1.6 a value equal to the Book's default leaves factory.toml; the project's loader merges it back.
+        self.repo.write("devtools/factory/factory.toml", "", add=False)
+        self.repo.write("devtools/factory/book_config.py",
+                        "def load(root):\n    return {'base_ref': 'main'}\n", add=False)
+        self.assertEqual("main", self.next_id.base_ref(self.repo.root))
+        self.repo.write("devtools/factory/book_config.py", "def load(root):\n    raise ValueError('bad')\n", add=False)
+        with self.assertRaises(self.next_id.CouldNotCheck):
+            self.next_id.base_ref(self.repo.root)
+
     def test_a_remote_and_its_head_are_read_once(self):
         self.repo.git("update-ref", "refs/remotes/origin/main", "HEAD")
         self.repo.git("symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/main")
-        self.assertEqual(["main", "origin/main"], self.next_id.refs(self.repo.root, "main"))
+        self.assertEqual([("refs/heads/main", "main"), ("refs/remotes/origin/main", "origin/main")],
+                         self.next_id.refs(self.repo.root, "main"))
+
+    def test_a_branch_is_read_by_its_full_name_where_a_tag_shares_its_short_name(self):
+        # A tag fix/other on an older commit: the short name reads the tag, the full name the branch (Book D58).
+        self.repo.git("tag", "fix/other")
+        self.repo.git("checkout", "-q", "-b", "fix/other")
+        self.repo.write("docs/archive/defects-closed.md", "| **D5** | 🔵 | Fixed |\n")
+        self.repo.commit()
+        self.repo.git("checkout", "-q", "main")
+        code, out = run_main(self.next_id.main, [str(self.repo.root)])
+        self.assertEqual(0, code, out)
+        self.assertIn("next D: D6  (highest D5, on fix/other)", out)
 
     def test_with_no_argument_the_project_is_the_git_top_level_of_the_current_directory(self):
         with working_directory(self.repo.root / "docs"):

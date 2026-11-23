@@ -198,6 +198,17 @@ class GuidesCheckTests(RepoTestCase):
         self.repo.commit("Edit the guide without moving its line")
         self.assertIn("AGE-LINE", self.kinds(self.run_check(), "farms.md"))
 
+    def test_the_age_line_says_why_no_count_was_made(self):
+        text = self.script.commits_since_text
+        self.assertEqual("no sources", text({"commits_since_on_its_sources": None, "sources": []}))
+        self.assertEqual("no checked commit to count from",
+                         text({"commits_since_on_its_sources": None, "sources": ["src/a.cs"]}))
+        self.assertEqual("source commits not counted",
+                         text({"commits_since_on_its_sources": self.script.UNKNOWN_COMMIT, "sources": ["src/a.cs"]}))
+        self.assertEqual("3 source commits since", text({"commits_since_on_its_sources": 3, "sources": ["src/a.cs"]}))
+        code, out = run_main(self.script.main, [str(self.repo.root), "--ref", "HEAD"])
+        self.assertNotIn("None source commits", out)
+
     def test_a_missing_source_stops_with_could_not_check(self):
         self.repo.git("rm", "-q", "docs/api/api-contracts.md")
         self.repo.commit("No contracts")
@@ -218,6 +229,16 @@ class GuidesCheckTests(RepoTestCase):
         self.repo.commit("Point at no source")
         code, out = run_main(self.script.main, [str(self.repo.root), "--ref", "HEAD"])
         self.assertEqual(2, code, "no source read is a check that did not run, never an empty E-UNNAMED")
+        self.assertIn("match no file", out)
+
+    def test_a_book_with_a_settings_loader_is_read_through_it(self):
+        # From Book 1.6 the settings are factory.toml over the Book's defaults, merged by the project's loader.
+        self.repo.write("devtools/factory/book_config.py", "class ConfigError(ValueError):\n    pass\n\n\n"
+                        "def load_at(root, ref):\n    return {'fe_guides': {'source_files': ['nowhere']}}\n\n\n"
+                        "def load(root):\n    return load_at(root, '')\n")
+        self.repo.commit("A loader with a default")
+        code, out = run_main(self.script.main, [str(self.repo.root), "--ref", "HEAD"])
+        self.assertEqual(2, code, out)
         self.assertIn("match no file", out)
 
     def test_a_last_checked_commit_the_ref_does_not_hold_is_reported(self):

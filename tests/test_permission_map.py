@@ -33,6 +33,39 @@ PLAN = """# Authorization — Design
 ## 3. Adding a module's permissions
 """
 
+PER_ROW_PLAN = r"""# Authorization — Design
+
+## 2. Permission catalogue
+
+| Feature | Note |
+|---|---|
+| Sign in, sign out | every user |
+
+### Permission-gated
+
+| Permission | A | B | C |
+|---|:-:|:-:|:-:|
+| `users.create` | ✔ | ✔¹ | — |
+| `users.delete` | ✔ | — | — |
+| `shelves.create` / `.edit` / `.list` | ✔ | — | — |
+| `sites.create` | ✔ | ✔ | — |
+| `sites.view` | ✔ | ✔ | — |
+| `places.*` | *identical to sites* | | |
+| `inventory.bins.create` / `.read` / `.delete` | ✔ | ✔ | — |
+
+¹ Footnotes are not rows: `users.grant` is not read.
+
+| Matrix row | A | B | C | Permission |
+|---|:-:|:-:|:-:|---|
+| *(no row — the menu item)* | ✔ | ✔ | ✔ | `planner.list` — ours, held with `tasks.edit` |
+| View tasks | ✔ | ✔ | ✔ | `planner.tasks.list`, `planner.tasks.view` |
+| Filter | ✔ | — | — | none — a rule on `planner.rules` |
+| Certificates | ✔ | ✔ | — | `certs.<alpha\|beta>.list`, `.view` |
+| Linked note | ✔ | — | — | see [users.md](users.md) and `users.md` |
+
+## 3. Adding a module's permissions
+"""
+
 CATALOGUE = """public static class Permissions
 {
     public static class Orders
@@ -116,6 +149,48 @@ class PermissionMapTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("In plan §2, not in the code: bins.delete", out)
         self.assertIn("route comparisons are skipped", out)
+
+    def test_an_action_after_a_dash_is_a_note_not_an_action(self):
+        plan = PLAN.replace("| `bins` | `list`, `delete` |", "| `bins` | `list`, `delete` — no `setstatus`: a field |")
+        self.assertNotIn("bins.setstatus", permission_map.plan_permissions(plan))
+
+    def test_one_permission_per_row_with_role_columns(self):
+        found = permission_map.plan_permissions(PER_ROW_PLAN)
+        self.assertEqual(found, {
+            "users.create", "users.delete",
+            "shelves.create", "shelves.edit", "shelves.list",
+            "sites.create", "sites.view", "places.create", "places.view",
+            "inventory.bins.create", "inventory.bins.read", "inventory.bins.delete",
+            "planner.list", "planner.tasks.list", "planner.tasks.view",
+            "certs.alpha.list", "certs.beta.list", "certs.alpha.view", "certs.beta.view",
+        })
+
+    def test_the_per_row_shape_is_compared_with_the_code_whole(self):
+        catalogue = CATALOGUE.replace('public const string List = "bins.list";',
+                                      'public const string Read = "inventory.bins.read";')
+        out, code = self.run_map(self.project(plan=PER_ROW_PLAN, catalogue=catalogue, contracts=None),
+                                 catalogue=Path("src/App/Permissions.cs"))
+        self.assertEqual(code, 0)
+        self.assertIn("Plan docs/plans/authorization.md: 19 permissions.", out)
+        self.assertIn("In the code, not in plan §2: orders.cancel, orders.create, orders.list, orders.view", out)
+        missing = out.split("In plan §2, not in the code: ")[1].split("\n")[0].split(", ")
+        self.assertIn("inventory.bins.create", missing)
+        self.assertNotIn("inventory.bins.read", missing)
+
+    def test_a_multi_dot_permission_groups_under_its_module(self):
+        catalogue = CATALOGUE.replace('public const string List = "bins.list";',
+                                      'public const string Read = "inventory.bins.read";')
+        contracts = CONTRACTS + "| GET | `/api/v1/bins` | `inventory.bins.read` | — | 200 | `ListBinsQuery` |\n"
+        out, _ = self.run_map(self.project(catalogue=catalogue, contracts=contracts))
+        self.assertIn("- inventory.bins\n  - read: GET /api/v1/bins", out)
+
+    def test_a_section_two_with_no_permission_blocks(self):
+        plan = PLAN.replace("| `orders` | `list`, `view`, `create` |\n| `bins` | `list`, `delete` |\n",
+                            "| Orders — list, view | yes |\n")
+        self.assertEqual(permission_map.plan_permissions(plan), set())
+        out, code = self.run_map(self.project(plan=plan))
+        self.assertEqual(code, 2)
+        self.assertIn("BLOCKED: section 2 of docs/plans/authorization.md yields no permission", out)
 
     def test_a_missing_plan_or_catalogue_blocks(self):
         out, code = self.run_map(self.project(plan=None))

@@ -55,8 +55,12 @@ stay in `factory.toml`: `[fe_guides]` (the Drive folder, the internal error code
 | `/book:release-notes` | fe-guides | `/release-notes` |
 | `/book:deploy` | deploy | `/deploy` (`/deploy-dev-qa` before 1.3) |
 
-Book template v1.5.0 needs this plugin at 0.6.0 or later (its `plugin_min`). From 0.6.0 a skill runs only
-`python devtools/book.py`, the Book's command since template v1.4.0; a Book that pins 0.6.0 is on 1.5.0.
+Book template v1.6.0 needs this plugin at 0.7.0 or later (its `plugin_min`; v1.5.1 needs 0.6.1, v1.5.0
+0.6.0). From 0.6.0 a skill runs only `python devtools/book.py`, the Book's command since template v1.4.0. From
+0.7.0 the scripts read a Book's settings through its own loader (`devtools/factory/book_config.py`:
+`factory.toml` over the Book's defaults, from template 1.6) and an older Book's `factory.toml` as before;
+`/book:raise` writes a defect's Type and Source and a question's State where the ledgers have them, and
+`/book:check-sources` proposes each question's State.
 
 ## Use it
 
@@ -71,7 +75,7 @@ A project names it in its shared `.claude/settings.json` (`extraKnownMarketplace
 ## Change it
 
 Edit the skills here, bump `version` in `plugins/book/.claude-plugin/plugin.json`, and run these before
-committing. Push this plugin's release tag (v0.6.0) before the boilerplate release whose settings pin it (v1.5.0).
+committing. Push this plugin's release tag (v0.7.0) before the boilerplate release whose settings pin it (v1.6.0).
 
 ```
 python tests/run.py
