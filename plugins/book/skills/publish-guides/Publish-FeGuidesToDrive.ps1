@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-Publishes every docs/fe-integration-guides/*.md to the FE team's Google Drive
+Publishes every docs/fe-integration-guides/*.md (not the _template.md) to the FE team's Google Drive
 folder as a Google Doc — creating the ones that are missing and updating the
 ones that exist in place, so their URLs never change.
 
@@ -328,7 +328,7 @@ try {
     }
 
     # ---- 1. The guides and their canonical titles -------------------------------
-    $guides = @(Get-ChildItem -LiteralPath $guidesDir -Filter *.md | Sort-Object Name | ForEach-Object {
+    $guides = @(Get-ChildItem -LiteralPath $guidesDir -Filter *.md | Where-Object { $_.Name -notlike '_*' } | Sort-Object Name | ForEach-Object {
         $h1 = [IO.File]::ReadAllLines($_.FullName, [Text.Encoding]::UTF8) | Where-Object { $_ -match '^# (.+)$' } | Select-Object -First 1
         if (-not $h1) { throw "$($_.Name) has no H1 — every guide needs one; it is the Drive title." }
         $relative = 'docs/fe-integration-guides/' + $_.Name
